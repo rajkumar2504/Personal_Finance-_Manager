@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - Personal Finance Manager</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar injected by layout.js -->
+
+        <main class="main-content">
+            <!-- Header injected by layout.js -->
+
+            <div class="flex-between mb-2">
+                <h1>Financial Reports</h1>
+                <div class="flex gap-1">
+                    <select id="reportPeriod">
+                        <option value="month">This Month</option>
+                        <option value="year">This Year</option>
+                        <option value="all">All Time</option>
+                    </select>
+                    <button class="btn btn-secondary" onclick="window.print()"><i class="fas fa-print"></i>
+                        Print</button>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="card stat-card">
+                    <div class="stat-info">
+                        <h3>Period Income</h3>
+                        <p id="periodIncome" style="color:var(--secondary-color)">₹0.00</p>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-info">
+                        <h3>Period Expenses</h3>
+                        <p id="periodExpense" style="color:var(--danger-color)">₹0.00</p>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-info">
+                        <h3>Net Savings</h3>
+                        <p id="periodSavings">₹0.00</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="charts-container">
+                <div class="card">
+                    <h3>Spending by Category</h3>
+                    <div style="height: 300px;">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Income vs Expense Trend</h3>
+                    <div style="height: 300px;">
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Detailed Breakdown</h3>
+                <div class="table-responsive">
+                    <table class="transaction-list">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Type</th>
+                                <th class="text-right">Total Amount</th>
+                                <th class="text-right">% of Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="breakdownTable">
+                            <!-- Populated JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/reports.js"></script>
+</body>
+
+</html>

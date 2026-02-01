@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expenses - Personal Finance Manager</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .filters-bar {
+            background: var(--bg-card);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--spacing-lg);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(9, 30, 66, 0.54);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-md);
+            width: 100%;
+            max-width: 500px;
+            box-shadow: var(--shadow-lg);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar injected by layout.js -->
+
+        <main class="main-content">
+            <!-- Header injected by layout.js -->
+
+            <div class="flex-between mb-2">
+                <h1>Transactions</h1>
+                <button class="btn btn-primary" id="addTransactionBtn"><i class="fas fa-plus"></i> Add New</button>
+            </div>
+
+            <div class="filters-bar">
+                <div class="flex gap-1" style="flex-wrap: wrap;">
+                    <div class="form-group" style="flex: 1; min-width: 200px; margin-bottom: 0;">
+                        <input type="text" id="searchInput" placeholder="Search transactions...">
+                    </div>
+                    <div class="form-group" style="width: 150px; margin-bottom: 0;">
+                        <select id="typeFilter">
+                            <option value="all">All Types</option>
+                            <option value="income">Income</option>
+                            <option value="expense">Expense</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="width: 150px; margin-bottom: 0;">
+                        <select id="categoryFilter">
+                            <option value="all">All Categories</option>
+                            <!-- Populated by JS -->
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="transaction-list">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th>Type</th>
+                                <th class="text-right">Amount</th>
+                                <th class="text-center" style="width: 100px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionTableBody">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal -->
+    <div id="transactionModal" class="modal">
+        <div class="modal-content">
+            <div class="flex-between mb-2">
+                <h2 id="modalTitle">Add Transaction</h2>
+                <button class="btn btn-secondary" style="border:none; padding: 5px;" id="closeModalBtn"><i
+                        class="fas fa-times"></i></button>
+            </div>
+            <form id="transactionForm">
+                <input type="hidden" id="transactionId">
+                <div class="form-group">
+                    <label>Type</label>
+                    <div class="flex gap-1">
+                        <label style="flex:1; cursor:pointer;" class="btn btn-secondary" id="typeIncomeLabel">
+                            <input type="radio" name="type" value="income" style="display:none;"
+                                onchange="updateTypeUI()"> Income
+                        </label>
+                        <label style="flex:1; cursor:pointer;" class="btn btn-danger" id="typeExpenseLabel">
+                            <input type="radio" name="type" value="expense" checked style="display:none;"
+                                onchange="updateTypeUI()"> Expense
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="amount">Amount</label>
+                    <input type="number" id="amount" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="date">Date</label>
+                    <input type="date" id="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" required>
+                        <!-- Options populated by JS based on type -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <input type="text" id="description" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block mt-2">Save Transaction</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/expenses.js"></script>
+    <script>
+        // Simple UI Helper for Radio Buttons in Modal
+        function updateTypeUI() {
+            const types = document.getElementsByName('type');
+            let selected;
+            for (let t of types) if (t.checked) selected = t.value;
+
+            const incomeLbl = document.getElementById('typeIncomeLabel');
+            const expenseLbl = document.getElementById('typeExpenseLabel');
+
+            if (selected === 'income') {
+                incomeLbl.classList.add('btn-primary');
+                incomeLbl.classList.remove('btn-secondary');
+                expenseLbl.classList.remove('btn-danger'); // reset
+                expenseLbl.classList.add('btn-secondary');
+            } else {
+                expenseLbl.classList.add('btn-danger');
+                expenseLbl.classList.remove('btn-secondary');
+                incomeLbl.classList.remove('btn-primary');
+                incomeLbl.classList.add('btn-secondary');
+            }
+
+            // Trigger category reload
+            if (typeof Expenses !== 'undefined') Expenses.populateCategories(selected);
+        }
+    </script>
+</body>
+
+</html>

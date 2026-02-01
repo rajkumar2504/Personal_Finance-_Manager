@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goals - Personal Finance Manager</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .goal-card {
+            border-top: 4px solid var(--accent-color);
+            position: relative;
+        }
+
+        .goal-card.completed {
+            border-top-color: var(--secondary-color);
+        }
+
+        .goal-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+            color: rgba(0, 0, 0, 0.05);
+        }
+
+        .progress-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: conic-gradient(var(--accent-color) 0deg, var(--bg-body) 0deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+        }
+
+        .progress-inner {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar injected by layout.js -->
+
+        <main class="main-content">
+            <!-- Header injected by layout.js -->
+
+            <div class="flex-between mb-2">
+                <h1>Financial Goals</h1>
+                <button class="btn btn-primary" id="addGoalBtn"><i class="fas fa-plus"></i> New Goal</button>
+            </div>
+
+            <div class="charts-container" id="goalsContainer">
+                <!-- Goals will be rendered here -->
+            </div>
+
+            <div id="noGoals" class="text-center" style="display:none; margin-top: 50px;">
+                <p>Start saving for your dreams. Create your first goal!</p>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Modal -->
+    <div id="goalModal" class="modal"
+        style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(9, 30, 66, 0.54); align-items: center; justify-content: center; z-index: 1000;">
+        <div class="modal-content"
+            style="background: white; padding: var(--spacing-xl); border-radius: var(--radius-md); width: 100%; max-width: 500px; box-shadow: var(--shadow-lg);">
+            <div class="flex-between mb-2">
+                <h2 id="modalTitle">Create Goal</h2>
+                <button class="btn btn-secondary" style="border:none; padding: 5px;" id="closeModalBtn"><i
+                        class="fas fa-times"></i></button>
+            </div>
+            <form id="goalForm">
+                <input type="hidden" id="goalId">
+                <div class="form-group">
+                    <label for="title">Goal Name</label>
+                    <input type="text" id="title" required placeholder="e.g. New Car, Vacation">
+                </div>
+                <div class="form-group">
+                    <label for="target">Target Amount</label>
+                    <input type="number" id="target" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="current">Current Savings</label>
+                    <input type="number" id="current" step="0.01" required value="0">
+                </div>
+                <div class="form-group">
+                    <label for="deadline">Target Date</label>
+                    <input type="date" id="deadline">
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block mt-2">Save Goal</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Deposit Modal -->
+    <div id="depositModal" class="modal"
+        style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(9, 30, 66, 0.54); align-items: center; justify-content: center; z-index: 1000;">
+        <div class="modal-content"
+            style="background: white; padding: var(--spacing-xl); border-radius: var(--radius-md); width: 100%; max-width: 400px; box-shadow: var(--shadow-lg);">
+            <div class="flex-between mb-2">
+                <h2>Add Savings</h2>
+                <button class="btn btn-secondary" style="border:none; padding: 5px;"
+                    onclick="document.getElementById('depositModal').style.display='none'"><i
+                        class="fas fa-times"></i></button>
+            </div>
+            <form id="depositForm">
+                <input type="hidden" id="depositGoalId">
+                <div class="form-group">
+                    <label>Amount to Add</label>
+                    <input type="number" id="depositAmount" step="0.01" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Add</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/goals.js"></script>
+</body>
+
+</html>

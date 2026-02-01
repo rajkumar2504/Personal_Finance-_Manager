@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget - Personal Finance Manager</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .budget-card {
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .progress-container {
+            height: 10px;
+            background-color: var(--bg-body);
+            border-radius: 5px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar injected by layout.js -->
+
+        <main class="main-content">
+            <!-- Header injected by layout.js -->
+
+            <div class="flex-between mb-2">
+                <h1>Budget Planner</h1>
+                <button class="btn btn-primary" id="addBudgetBtn"><i class="fas fa-plus"></i> Set Budget</button>
+            </div>
+
+            <div class="charts-container" id="budgetContainer">
+                <!-- Budgets will be rendered here as cards -->
+            </div>
+
+            <div id="noBudgets" class="text-center" style="display:none; margin-top: 50px;">
+                <p>No budgets set yet. Start by tracking your spending limits!</p>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Modal -->
+    <div id="budgetModal" class="modal"
+        style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(9, 30, 66, 0.54); align-items: center; justify-content: center; z-index: 1000;">
+        <div class="modal-content"
+            style="background: white; padding: var(--spacing-xl); border-radius: var(--radius-md); width: 100%; max-width: 500px; box-shadow: var(--shadow-lg);">
+            <div class="flex-between mb-2">
+                <h2 id="modalTitle">Set Budget</h2>
+                <button class="btn btn-secondary" style="border:none; padding: 5px;" id="closeModalBtn"><i
+                        class="fas fa-times"></i></button>
+            </div>
+            <form id="budgetForm">
+                <input type="hidden" id="budgetId">
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" required>
+                        <!-- Options populated by JS -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="limit">Monthly Limit</label>
+                    <input type="number" id="limit" step="1" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block mt-2">Save Budget</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/budget.js"></script>
+</body>
+
+</html>
