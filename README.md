@@ -5,6 +5,8 @@ A modern, privacy-focused web application to track your income, manage expenses,
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Status](https://img.shields.io/badge/status-Active-success.svg)
 
+## 🔗 [Live Demo](https://rajkumar2504.github.io/Personal_Finance-_Manager/login.html)
+
 ## ✨ Key Features
 
 - **📊 Dynamic Dashboard**: Get a real-time overview of your **Total Balance**, **Income**, and **Expenses**.
