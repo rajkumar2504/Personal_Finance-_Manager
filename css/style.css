@@ -44,12 +44,29 @@
 
 [data-theme="dark"] {
     --primary-color: #4c9aff;
+    --primary-dark: #2684ff;
+    /* Lighter hover state for dark mode */
     --text-color: #ebecf0;
     --text-secondary: #b3bac5;
     --bg-body: #172b4d;
     --bg-card: #253858;
     --bg-sidebar: #0c1c35;
     --border-color: #42526e;
+
+    /* Input backgrounds for dark mode */
+    --accent-color: #ffAB00;
+}
+
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
+    background-color: #1b2a4e;
+    color: #fff;
+    border-color: #42526e;
+}
+
+[data-theme="dark"] .stat-card {
+    background-color: var(--bg-card);
 }
 
 * {
@@ -101,7 +118,7 @@ ul {
 }
 
 .logo {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: bold;
     text-align: center;
     margin-bottom: var(--spacing-xl);

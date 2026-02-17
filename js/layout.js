@@ -6,11 +6,21 @@ const Layout = {
         Layout.renderSidebar();
         Layout.renderHeader(currentUser);
         Layout.highlightCurrentPage();
+        Layout.initTheme(); // Initialize theme
 
         document.getElementById('logoutBtn').addEventListener('click', (e) => {
             e.preventDefault();
             Auth.logout();
         });
+
+        // Add Theme Toggle Listener
+        const themeBtn = document.getElementById('themeToggle');
+        if (themeBtn) {
+            themeBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                Layout.toggleTheme();
+            });
+        }
     },
 
     renderSidebar: () => {
@@ -18,7 +28,7 @@ const Layout = {
         sidebar.className = 'sidebar';
         sidebar.innerHTML = `
             <div class="logo">
-                <i class="fas fa-wallet"></i> FinManager
+                <i class="fas fa-wallet"></i> Personal Finance Manager
             </div>
             <ul class="nav-links">
                 <li><a href="index.html" data-page="index"><i class="fas fa-home"></i> Dashboard</a></li>
@@ -26,6 +36,7 @@ const Layout = {
                 <li><a href="budget.html" data-page="budget"><i class="fas fa-chart-pie"></i> Budget</a></li>
                 <li><a href="goals.html" data-page="goals"><i class="fas fa-bullseye"></i> Goals</a></li>
                 <li><a href="reports.html" data-page="reports"><i class="fas fa-chart-line"></i> Reports</a></li>
+                <li><a href="#" id="themeToggle"><i class="fas fa-moon"></i> Dark Mode</a></li>
             </ul>
         `;
         document.querySelector('.app-container').prepend(sidebar);
@@ -61,6 +72,37 @@ const Layout = {
 
         const link = document.querySelector(`a[data-page="${page}"]`);
         if (link) link.classList.add('active');
+    },
+
+    initTheme: () => {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        Layout.updateThemeIcon(savedTheme);
+    },
+
+    toggleTheme: () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        Layout.updateThemeIcon(newTheme);
+    },
+
+    updateThemeIcon: (theme) => {
+        const themeBtn = document.getElementById('themeToggle');
+        if (!themeBtn) return;
+
+        const icon = themeBtn.querySelector('i');
+        const text = themeBtn.childNodes[1]; // The text node after <i>
+
+        if (theme === 'dark') {
+            icon.className = 'fas fa-sun';
+            text.textContent = ' Light Mode';
+        } else {
+            icon.className = 'fas fa-moon';
+            text.textContent = ' Dark Mode';
+        }
     }
 };
 
